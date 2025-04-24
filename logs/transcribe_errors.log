@@ -1,0 +1,5 @@
+2025-04-24 11:39:20,985 ERROR \u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u0444\u043e\u0440\u043c\u0430\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0438 \u0447\u0435\u0440\u0435\u0437 GPT: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: inline keyboard expected
+2025-04-24 11:39:21,115 ERROR \u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u0440\u0438 \u0440\u0430\u0441\u0448\u0438\u0444\u0440\u043e\u0432\u043a\u0435 \u0430\u0443\u0434\u0438\u043e: A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: inline keyboard expected
+2025-04-24 11:39:21,262 ERROR A request to the Telegram API was unsuccessful. Error code: 400. Description: Bad Request: inline keyboard expected
+2025-04-24 11:56:28,524 ERROR Unknown error: TimeoutError
+2025-04-24 11:56:28,527 ERROR Unhandled exception (full traceback for debug level): Request timeout. Request: method=get url=getUpdates params=<aiohttp.formdata.FormData object at 0x000001B1DC1944D0> files=None request_timeout=300

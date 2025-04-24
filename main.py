@@ -1,4 +1,4 @@
-from bot import bot
+from frontend_bot.bot import bot
 
 if __name__ == "__main__":
     import asyncio

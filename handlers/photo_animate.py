@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, ContextTypes, MessageHandler, CallbackQueryHandler, filters
-from keyboards.emotion import emotion_keyboard
-from services.backend_client import send_photo_for_animation
+from frontend_bot.keyboards.emotion import emotion_keyboard
+from frontend_bot.services.backend_client import send_photo_for_animation
 import os
 
 # Временное хранилище фото по user_id

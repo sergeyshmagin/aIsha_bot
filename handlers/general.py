@@ -12,14 +12,16 @@ bot = AsyncTeleBot(TELEGRAM_TOKEN)
 
 def main_menu_keyboard():
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(KeyboardButton("🎤 Аудио"))
+    markup.add(KeyboardButton("📄 Текстовый транскрипт"))
     markup.add(KeyboardButton("❓ Помощь"))
-    markup.add(KeyboardButton("Аудио"))
     return markup
 
 
 def audio_menu_keyboard():
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(KeyboardButton("Аудио в текст"))
+    markup.add(KeyboardButton("Распознать запись встречи"))
+    markup.add(KeyboardButton("Обработать текстовый транскрипт"))
     markup.add(KeyboardButton("Назад"))
     return markup
 
@@ -51,21 +53,19 @@ async def help_handler(message):
     )
 
 
-@bot.message_handler(func=lambda m: m.text == "Аудио")
-async def audio_menu(message):
+@bot.message_handler(func=lambda m: m.text == "🎤 Аудио")
+async def audio_instruction(message):
     await bot.send_message(
         message.chat.id,
-        "Выберите действие с аудио:",
-        reply_markup=audio_menu_keyboard()
+        "Пожалуйста, отправьте аудиофайл (mp3/ogg) для расшифровки."
     )
 
 
-@bot.message_handler(func=lambda m: m.text == "Аудио в текст")
-async def audio_to_text_instruction(message):
+@bot.message_handler(func=lambda m: m.text == "📄 Текстовый транскрипт")
+async def text_instruction(message):
     await bot.send_message(
         message.chat.id,
-        "Пожалуйста, отправьте аудиофайл или голосовое сообщение в этот чат, и я преобразую его в текст.",
-        reply_markup=audio_menu_keyboard()
+        "Пожалуйста, отправьте .txt-файл с транскриптом для обработки."
     )
 
 
@@ -73,7 +73,10 @@ async def audio_to_text_instruction(message):
 async def back_to_main_menu(message):
     await bot.send_message(
         message.chat.id,
-        "Главное меню:",
+        "Главное меню. Выберите действие:\n\n"
+        "🎤 Аудио — отправить аудиофайл для расшифровки\n"
+        "📄 Текстовый транскрипт — отправить текстовый файл для обработки\n"
+        "❓ Помощь — узнать о возможностях бота",
         reply_markup=main_menu_keyboard()
     )
 

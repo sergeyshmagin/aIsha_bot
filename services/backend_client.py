@@ -1,6 +1,6 @@
 import aiohttp
 import os
-from config import BACKEND_URL
+from frontend_bot.config import BACKEND_URL
 
 async def send_photo_for_animation(photo_path: str, emotion: str) -> str:
     url = f"{BACKEND_URL}/animate-photo"

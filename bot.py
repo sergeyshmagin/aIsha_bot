@@ -1,5 +1,5 @@
-from handlers.general import bot
-from handlers.transcribe import *
+from frontend_bot.handlers.general import bot
+from frontend_bot.handlers.transcribe import *
 
 
 if __name__ == "__main__":
