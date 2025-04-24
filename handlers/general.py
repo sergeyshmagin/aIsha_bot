@@ -13,6 +13,14 @@ bot = AsyncTeleBot(TELEGRAM_TOKEN)
 def main_menu_keyboard():
     markup = ReplyKeyboardMarkup(resize_keyboard=True)
     markup.add(KeyboardButton("❓ Помощь"))
+    markup.add(KeyboardButton("Аудио"))
+    return markup
+
+
+def audio_menu_keyboard():
+    markup = ReplyKeyboardMarkup(resize_keyboard=True)
+    markup.add(KeyboardButton("Аудио в текст"))
+    markup.add(KeyboardButton("Назад"))
     return markup
 
 
@@ -39,6 +47,33 @@ async def help_handler(message):
             "🎁 Видео-поздравление — оживлённое поздравление в видеоформате\n\n"
             "Просто отправь фото или нажми кнопку 👇"
         ),
+        reply_markup=main_menu_keyboard()
+    )
+
+
+@bot.message_handler(func=lambda m: m.text == "Аудио")
+async def audio_menu(message):
+    await bot.send_message(
+        message.chat.id,
+        "Выберите действие с аудио:",
+        reply_markup=audio_menu_keyboard()
+    )
+
+
+@bot.message_handler(func=lambda m: m.text == "Аудио в текст")
+async def audio_to_text_instruction(message):
+    await bot.send_message(
+        message.chat.id,
+        "Пожалуйста, отправьте аудиофайл или голосовое сообщение в этот чат, и я преобразую его в текст.",
+        reply_markup=audio_menu_keyboard()
+    )
+
+
+@bot.message_handler(func=lambda m: m.text == "Назад")
+async def back_to_main_menu(message):
+    await bot.send_message(
+        message.chat.id,
+        "Главное меню:",
         reply_markup=main_menu_keyboard()
     )
 
