@@ -3,22 +3,26 @@ from telegram.ext import Application, ContextTypes, MessageHandler, CallbackQuer
 from frontend_bot.keyboards.emotion import emotion_keyboard
 from frontend_bot.services.backend_client import send_photo_for_animation
 import os
+from telebot.types import Message
+from frontend_bot.handlers.general import bot
 
 # Временное хранилище фото по user_id
 user_photos = {}
 
-async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    photo = update.message.photo[-1]  # самое большое по качеству
-    file = await photo.get_file()
-    
-    # Сохраняем в память путь (можно использовать storage/)
+@bot.message_handler(content_types=['photo'])
+async def handle_photo(message: Message):
+    user_id = message.from_user.id
+    photo = message.photo[-1]  # самое большое по качеству
+    file_info = await bot.get_file(photo.file_id)
     file_path = f"storage/{user_id}_photo.jpg"
-    await file.download_to_drive(file_path)
+    downloaded_file = await bot.download_file(file_info.file_path)
+    os.makedirs("storage", exist_ok=True)
+    with open(file_path, "wb") as f:
+        f.write(downloaded_file)
     user_photos[user_id] = file_path
-
-    await update.message.reply_text(
-        "📸 Фото получено! Выбери стиль оживления:",
+    await bot.send_message(
+        message.chat.id,
+        "📸 Фото получено! Выберите стиль оживления:",
         reply_markup=emotion_keyboard()
     )
 

@@ -1,8 +1,8 @@
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 def emotion_keyboard():
-    return InlineKeyboardMarkup([
-        [InlineKeyboardButton("😊 Улыбка", callback_data="emotion:smile")],
-        [InlineKeyboardButton("🥲 Трогательно", callback_data="emotion:soft")],
-        [InlineKeyboardButton("🎉 Празднично", callback_data="emotion:celebrate")]
-    ])
+    markup = InlineKeyboardMarkup()
+    markup.add(InlineKeyboardButton("😊 Улыбка", callback_data="emotion:smile"))
+    markup.add(InlineKeyboardButton("🥲 Трогательно", callback_data="emotion:soft"))
+    markup.add(InlineKeyboardButton("🎉 Празднично", callback_data="emotion:celebrate"))
+    return markup
