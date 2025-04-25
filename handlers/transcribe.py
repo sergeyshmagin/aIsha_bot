@@ -17,6 +17,7 @@ from frontend_bot.keyboards.reply import (
     history_keyboard
 )
 from typing import Dict
+from frontend_bot.services.file_utils import is_audio_file_ffmpeg, is_valid_text_transcript
 
 logger = get_logger('transcribe')
 
@@ -125,6 +126,17 @@ async def transcribe_audio(message: Message):
     downloaded_file = await bot.download_file(file_info.file_path)
     with open(temp_file, "wb") as f:
         f.write(downloaded_file)
+
+    # Проверка, что файл действительно является аудиофайлом, поддерживаемым ffmpeg
+    if not is_audio_file_ffmpeg(temp_file):
+        await bot.send_message(
+            message.chat.id,
+            "Ваш файл не является поддерживаемой аудиозаписью. "
+            "Пожалуйста, загрузите аудиофайл в одном из следующих форматов: "
+            "mp3, wav, ogg, m4a, flac, aac, wma, opus."
+        )
+        os.remove(temp_file)
+        return
 
     # Конвертируем в mp3 для Whisper
     temp_file_mp3 = temp_file.rsplit('.', 1)[0] + '.mp3'
@@ -591,6 +603,15 @@ async def handle_text_transcript_file(message: Message):
     downloaded_file = await bot.download_file(file_info.file_path)
     with open(file_path, "wb") as f:
         f.write(downloaded_file)
+
+    if not is_valid_text_transcript(file_path):
+        await bot.send_message(
+            message.chat.id,
+            "Файл не подходит. Убедитесь, что это текстовый транскрипт на русском или английском языке, не менее 1000 символов, без бинарных или нечитабельных символов."
+        )
+        os.remove(file_path)
+        return
+
     user_transcripts[user_id] = file_path
     await bot.send_message(
         message.chat.id,
